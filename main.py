@@ -47,7 +47,6 @@ class Main:
             if self.building_progress[v] == 0:
                 self.building_progress[v] = 1
             elif self.building_progress[v] == 1:
-                print(Fore.RED + "HW Forge: could not build all packages")
                 return True, [v]
 
             for u in self.installed_packages[v].dependencies:
@@ -55,6 +54,7 @@ class Main:
                 if hasattr(res, "__getitem__") and [0]:
                     res[1].append(v)
                     if res[1][0] == v:
+                        print(Fore.RED + "HW Forge: could not build all packages")
                         print("This part of chain of dependencies is a cycle:")
                         for impossible_to_build_pack in res[1][::-1]:
                             print(self.installed_packages[impossible_to_build_pack].more_type_info)
