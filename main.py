@@ -4,15 +4,13 @@ import fhw_lib
 from colorama import Fore
 
 
-class Main:
-    def __init__(self):
-        self.hello_world = "Hello, world!"
-        self.writing_hello_word = True
-        self.using_forge = True
-
+class Forge:
+    def __init__(self, program):
+        self.program = program
         self.installed_packages = {}
         self.building_progress = {}
         self.built_packages = {}
+        self.ban = ["__pycache__"]
 
     @staticmethod
     def get_dirs(path_to_parent_dir):
@@ -29,10 +27,9 @@ class Main:
         return mod_main_func, mod_info
 
     def read_installed_mods(self):
-        ban = ["__pycache__"]
         mod_dirs = self.get_dirs("./mods")
-        mod_dirs = filter(lambda mod_dir: not(mod_dir in ban), mod_dirs)
-        installed_mods = map(lambda mod_dir: self.load_mod(mod_dir)[0](self), mod_dirs)
+        mod_dirs = filter(lambda mod_dir: not(mod_dir in self.ban), mod_dirs)
+        installed_mods = map(lambda mod_dir: self.load_mod(mod_dir)[0](self.program), mod_dirs)
         return installed_mods
 
     def generate_packages_list(self, installed_mods):
@@ -72,18 +69,25 @@ class Main:
         self.generate_packages_list(self.read_installed_mods())
         self.build_using_top_sort()
 
+
+class Main:
+    def __init__(self):
+        self.version = (1, 0, 2)
+        self.hello_world = "Hello, world!"
+        self.writing_hello_word = True
+        self.using_forge = True
+        self.forge = Forge(self)
+
     # Hello, world
     def write_hello_world(self):
         sys.stdout.write(self.hello_world)
 
     def main(self):
         if self.using_forge:
-            self.prepare()
+            self.forge.prepare()
         if self.writing_hello_word:
             self.write_hello_world()
 
 
-program = Main()
-
 if __name__ == '__main__':
-    program.main()
+    Main().main()

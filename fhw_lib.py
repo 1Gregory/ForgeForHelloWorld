@@ -17,8 +17,8 @@ class HWPackage:
 
     def build_me(self):
         for d_pack_name, d_pack_version, preferred_name in self.dependencies:
-            setattr(self, preferred_name, self.program.built_packages[d_pack_name])
-        self.program.built_packages[self.name] = self
+            setattr(self, preferred_name, self.program.forge.built_packages[d_pack_name])
+        self.program.forge.built_packages[self.name] = self
         self.built = True
         self.after_build()
 
